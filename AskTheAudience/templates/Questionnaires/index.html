@@ -2,6 +2,26 @@
 
 {% block content %}
 
-Hello there!
+<div class="row">
+  {% for item in question_list %}
+  <div class="col s4">
+    <div class="card" style="width: 18rem;">
+      <!-- <img src="..." class="card-img-top" alt="..."> -->
+      <div class="card-body">
+        <h5 class="card-title">{{item.text}}</h5>
+        <!--
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        -->
+        <form action="/vote.html" method="get">
+          <button class="btn btn-primary" type="submit" name="question_id" value="{{item.id}}">Vote</button>
+
+        </form>
+        <!-- <a href="/vote/{{ item.id }}" class="btn btn-primary">Answear</a> -->
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
 
 {% endblock content %}
