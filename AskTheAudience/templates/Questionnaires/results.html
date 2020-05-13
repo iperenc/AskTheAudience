@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1> {{ question.text }} - answers </h1>
+
+<ul class="list-group">
+  {% for answer, answer_percent in answer_list %}
+
+    {% if answer.id == answer_id %}
+      <li class="list-group-item active float-left">{{answer.text}}
+    {% else %}
+      <li class="list-group-item float-left">{{answer.text}}
+    {% endif %}
+
+      <div class="progress float-right w-50">
+        <div class="progress-bar" role="progressbar" style="width: {{answer_percent|floatformat:"0"}}%;" aria-valuenow="{{answer_percent|floatformat:"0"}}" aria-valuemin="0" aria-valuemax="100">{{answer_percent|floatformat:"0"}}%</div>
+      </div>
+
+    </li>
+
+  {% endfor %}
+</ul>
+
+{% endblock content %}
