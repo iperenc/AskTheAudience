@@ -1,18 +1,20 @@
 from django.shortcuts import get_object_or_404, render
+from django.views import generic
+from django.views.generic.edit import FormView, CreateView
+
+from Questionnaires.forms import NewQuestionForm
 from Questionnaires.models import *
 
-# Create your views here.
-def index(request):
-    question_list = Question.objects.all()
-    stuff_for_frontend = {
-        'question_list' : question_list,
-    }
-    return render(request, "Questionnaires/index.html", stuff_for_frontend)
+class IndexView(generic.ListView):
+    template_name = 'Questionnaires/index.html'
+    context_object_name = 'question_list'
+
+    def get_queryset(self):
+        return Question.objects.all()
 
 def vote(request):
     question = get_object_or_404(Question, pk=request.GET['question_id'])
-    answer_list = question.answer_set.all()
-    return render(request, "Questionnaires/vote.html", {'question' : question, "answer_list" : answer_list})
+    return render(request, "Questionnaires/vote.html", {'question' : question})
 
 def results(request):
     answer_received = get_object_or_404(Answer, pk=request.POST.get('radio_choice') )
@@ -34,3 +36,8 @@ def results(request):
         'answer_id' : answer_received.id,
         }
     return render(request, "Questionnaires/results.html", front_end_info)
+
+class NewQuestionView(CreateView):
+    template_name = 'Questionnaires/new_question.html'
+    form_class = NewQuestionForm
+    success_url = '/'
